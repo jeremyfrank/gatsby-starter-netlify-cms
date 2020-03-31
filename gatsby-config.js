@@ -8,6 +8,16 @@ module.exports = {
     'gatsby-plugin-react-helmet',
     'gatsby-plugin-sass',
     {
+      resolve: "gatsby-source-lever",
+      options: {
+        // Your Lever site instance name.
+        site: "standard",
+        // Set verboseOutput to true to display a verbose output on `npm run develop` or `npm run build`
+        // It can help you debug specific API Endpoints problems
+        verboseOutput: false,
+      },
+    },
+    {
       // keep as first gatsby-source-filesystem plugin for gatsby image support
       resolve: 'gatsby-source-filesystem',
       options: {
