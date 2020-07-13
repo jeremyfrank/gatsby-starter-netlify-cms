@@ -14,5 +14,8 @@ module.exports = {
         'resource-summary:image:size': ['error', {'maxNumericValue': 1500000}],
       }
     },
+    upload: {
+      target: 'temporary-public-storage',
+    }
   },
 };

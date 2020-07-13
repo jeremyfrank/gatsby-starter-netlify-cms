@@ -29,9 +29,7 @@ jobs:
           yarn install
           yarn build
 
-      - name: Audit URLs using Lighthouse
-        uses: treosh/lighthouse-ci-action@v3
-        with:
-          configPath: ./lighthouserc.js
-          uploadArtifacts: true
-          temporaryPublicStorage: true
+      - name: Run Lighthouse CI
+        run: |
+          npm install -g @lhci/cli@0.4.x
+          lhci autorun
