@@ -32,4 +32,4 @@ jobs:
       - name: Run Lighthouse CI
         run: |
           npm install -g @lhci/cli@0.4.x
-          lhci autorun
+          lhci autorun --upload:githubAppToken=${{ secrets.LHCI_GITHUB_APP_TOKEN }}
