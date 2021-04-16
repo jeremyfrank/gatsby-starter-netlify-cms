@@ -3,15 +3,20 @@ on: pull_request
 jobs:
   build:
     runs-on: ubuntu-latest
+    environment:
+      name: build
     steps:
       - uses: actions/checkout@v2
+
       - name: Use Node.js 12.x
         uses: actions/setup-node@v1
         with:
           node-version: 12.x
+
       - name: Get yarn cache directory path
         id: yarn-cache-dir-path
         run: echo "::set-output name=dir::$(yarn cache dir)"
+
       - name: Cache Node.js modules
         id: yarn-cache
         uses: actions/cache@v2.0.0
@@ -20,22 +25,15 @@ jobs:
           key: ${{ runner.os }}-yarn-${{ hashFiles('**/yarn.lock') }}
           restore-keys: |
             ${{ runner.os }}-yarn-
+
       - name: Install & Build
         run: |
           yarn install
           yarn build
-      - name: Wait for the Netlify Preview
-        uses: jakepartusch/wait-for-netlify-action@v1
-        id: netlify
-        with:
-          site_name: 'lucid-banach-50bf50'
-          max_timeout: 180
-      - name: Audit URLs using Lighthouse
-        uses: treosh/lighthouse-ci-action@v3
-        with:
-          urls: |
-            ${{ steps.netlify.outputs.url }}
-            ${{ steps.netlify.outputs.url }}/products
-          budgetPath: ./budget.json
-          uploadArtifacts: true
-          temporaryPublicStorage: true
+
+      - name: Run Lighthouse CI
+        run: |
+          npm install -g @lhci/cli@0.7.x
+          lhci autorun
+        env:
+          LHCI_GITHUB_APP_TOKEN: ${{ secrets.LHCI_GITHUB_APP_TOKEN }}
