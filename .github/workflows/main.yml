@@ -3,6 +3,8 @@ on: pull_request
 jobs:
   build:
     runs-on: ubuntu-latest
+    environment:
+      name: build
     steps:
       - uses: actions/checkout@v2
 
@@ -31,5 +33,7 @@ jobs:
 
       - name: Run Lighthouse CI
         run: |
-          npm install -g @lhci/cli@0.4.x
-          lhci autorun --upload:githubAppToken=${{ secrets.LHCI_GITHUB_APP_TOKEN }}
+          npm install -g @lhci/cli@0.7.x
+          lhci autorun
+        env:
+          LHCI_GITHUB_APP_TOKEN: ${{ secrets.LHCI_GITHUB_APP_TOKEN }}
